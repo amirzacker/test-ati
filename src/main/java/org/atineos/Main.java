@@ -17,7 +17,7 @@ public class Main {
     private static final int MAX_PAGES = 5;
     private static final String OUTPUT_FILE = "authors.txt";
 
-    public static void main(String[] args) {
+    static void main() {
         var client = new GutendexClient();
         var authorService = new AuthorService();
         var fileWriterService = new FileWriterService();
