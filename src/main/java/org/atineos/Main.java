@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.atineos.dto.GutendexResponse;
 import org.atineos.service.AuthorService;
@@ -24,7 +27,7 @@ public class Main {
 
         log.info("Starting Gutendex API consumption to fetch authors...");
         
-        List<GutendexResponse> responses = fetchAllPages(client);
+        var responses = fetchAllPages(client);
 
         if (!responses.isEmpty()) {
             processAndWriteAuthors(responses, authorService, fileWriterService);
@@ -34,25 +37,30 @@ public class Main {
     }
 
     private static List<GutendexResponse> fetchAllPages(GutendexClient client) {
-        List<GutendexResponse> responses = new ArrayList<>();
-        var currentUrl = INITIAL_URL;
-        int pageCount = 0;
+        var responses = new ArrayList<GutendexResponse>();
+        var currentUrl = new AtomicReference<>(INITIAL_URL);
+        var pageCount = new AtomicInteger(0);
 
-        while (currentUrl != null && pageCount < MAX_PAGES) {
-            try {
-                var response = client.getBooks(currentUrl);
-                responses.add(response);
-                currentUrl = response.next();
-                pageCount++;
-                log.info("Successfully fetched page {}", pageCount);
-            } catch (IOException | InterruptedException e) {
-                log.error("Error occurred while fetching data from API: ", e);
-                if (e instanceof InterruptedException) {
-                    Thread.currentThread().interrupt();
-                }
-                break;
-            }
-        }
+        Stream.generate(currentUrl::get)
+                .takeWhile(url -> url != null && pageCount.get() < MAX_PAGES)
+                .map(url -> {
+                    try {
+                        var response = client.getBooks(url);
+                        currentUrl.set(response.next());
+                        pageCount.incrementAndGet();
+                        log.info("Successfully fetched page {}", pageCount.get());
+                        return response;
+                    } catch (IOException | InterruptedException e) {
+                        log.error("Error occurred while fetching data from API: ", e);
+                        if (e instanceof InterruptedException) {
+                            Thread.currentThread().interrupt();
+                        }
+                        return null;
+                    }
+                })
+                .takeWhile(java.util.Objects::nonNull)
+                .forEach(responses::add);
+
         return responses;
     }
 
