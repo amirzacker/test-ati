@@ -7,8 +7,9 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FileWriterService {
+public class FileWriterService implements WriterService {
 
+    @Override
     public void writeAuthorsToFile(Set<String> authors, Path filePath) throws IOException {
         log.info("Writing {} authors to file: {}", authors.size(), filePath);
         Files.write(filePath, authors);

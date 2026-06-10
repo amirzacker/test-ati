@@ -1,6 +1,8 @@
 package org.atineos;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.net.http.HttpClient;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import org.atineos.dto.GutendexResponse;
 import org.atineos.service.AuthorService;
 import org.atineos.service.FileWriterService;
 import org.atineos.service.GutendexClient;
+import org.atineos.service.WriterService;
 
 @Slf4j
 public class Main {
@@ -21,7 +24,9 @@ public class Main {
     private static final String OUTPUT_FILE = "authors.txt";
 
     static void main() {
-        var client = new GutendexClient();
+        var httpClient = HttpClient.newHttpClient();
+        var objectMapper = new ObjectMapper();
+        var client = new GutendexClient(httpClient, objectMapper);
         var authorService = new AuthorService();
         var fileWriterService = new FileWriterService();
 
@@ -64,7 +69,7 @@ public class Main {
         return responses;
     }
 
-    private static void processAndWriteAuthors(List<GutendexResponse> responses, AuthorService authorService, FileWriterService fileWriterService) {
+    private static void processAndWriteAuthors(List<GutendexResponse> responses, AuthorService authorService, WriterService fileWriterService) {
         log.info("Extraction of authors from {} pages...", responses.size());
         var uniqueAuthors = authorService.extractAuthors(responses);
 

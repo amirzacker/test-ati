@@ -16,9 +16,9 @@ public class GutendexClient {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
-    public GutendexClient() {
-        this.httpClient = HttpClient.newHttpClient();
-        this.objectMapper = new ObjectMapper();
+    public GutendexClient(HttpClient httpClient, ObjectMapper objectMapper) {
+        this.httpClient = httpClient;
+        this.objectMapper = objectMapper;
     }
 
     public GutendexResponse getBooks(String url) throws IOException, InterruptedException {
