@@ -1,12 +1,13 @@
-package org.example.service;
+package org.atineos.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import org.example.dto.Author;
-import org.example.dto.Book;
-import org.example.dto.GutendexResponse;
+import org.atineos.dto.Author;
+import org.atineos.dto.Book;
+import org.atineos.dto.GutendexResponse;
+import org.atineos.service.AuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,9 +1,9 @@
-package org.example.service;
+package org.atineos.service;
 
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.example.dto.GutendexResponse;
+import org.atineos.dto.GutendexResponse;
 
 public class AuthorService {
 

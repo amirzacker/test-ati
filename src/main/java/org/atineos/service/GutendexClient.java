@@ -1,8 +1,8 @@
-package org.example.service;
+package org.atineos.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.example.dto.GutendexResponse;
+import org.atineos.dto.GutendexResponse;
 
 import java.io.IOException;
 import java.net.URI;

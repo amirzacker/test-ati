@@ -1,7 +1,6 @@
-package org.example.dto;
+package org.atineos.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Book(List<Author> authors) {}
+public record Author(String name) {}

@@ -1,14 +1,14 @@
-package org.example;
+package org.atineos;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.example.dto.GutendexResponse;
-import org.example.service.AuthorService;
-import org.example.service.FileWriterService;
-import org.example.service.GutendexClient;
+import org.atineos.dto.GutendexResponse;
+import org.atineos.service.AuthorService;
+import org.atineos.service.FileWriterService;
+import org.atineos.service.GutendexClient;
 
 @Slf4j
 public class Main {
